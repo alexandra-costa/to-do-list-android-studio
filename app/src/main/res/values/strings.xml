@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Lista de Tarefas</string>
+
+    <string name="alterar_descricao">Descrição</string>
+    <string name="alterar_botao">Alterar</string>
+
+    <string name="cadastrar_descricao">digite algo...</string>
+    <string name="cadastrar_botao_salvar">Salvar Tarefa</string>
+
+    <string name="adapter_descricao">Descrição da tarefa</string>
+
+    <string name="idioma_selecao">Selecione um Idioma</string>
+    
+    <string-array name="listar_idiomas">
+        <item>Padrão</item>
+        <item>Inglês</item>
+        <item>Português-BR</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Task List</string>
+
+    <string name="alterar_descricao">Description</string>
+    <string name="alterar_botao">Change</string>
+
+    <string name="cadastrar_descricao">type something...</string>
+    <string name="cadastrar_botao_salvar">Save Task</string>
+
+    <string name="adapter_descricao">Task description</string>
+    <string name="idioma_selecao">Select a Language</string>
+
+    <string-array name="listar_idiomas">
+        <item>Default</item>
+        <item>English</item>
+        <item>Portuguese-BR</item>
+    </string-array>
+</resources>
