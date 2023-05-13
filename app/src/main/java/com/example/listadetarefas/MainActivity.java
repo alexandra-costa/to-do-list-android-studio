@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -45,13 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listarTarefas = findViewById(R.id.listar_tarefas);
 
-        LinearLayout container = findViewById(R.id.container);
-
-
-        listarTarefas = (ListView) findViewById(R.id.listar_tarefas);
-
-        fabCadastrarTarefa = (FloatingActionButton) findViewById(R.id.fab_cadastrar_tarefa);
+        fabCadastrarTarefa = findViewById(R.id.fab_cadastrar_tarefa);
         fabCadastrarTarefa.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, CadastrarTarefaActivity.class);
             startActivityForResult(intent, 1);
@@ -62,22 +56,10 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("id_tarefa", tarefas.get(position).getId());
             startActivityForResult(intent, 2);
         });
-        List<Tarefa> tarefas = AppDatabase.getInstance(this).tarefaDAO().listarTodos();
-        for (Tarefa tarefa : tarefas) {
-            View view = getLayoutInflater().inflate(R.layout.adapter_listar_tarefas, null);
-            CheckBox checkBox = view.findViewById(R.id.tarefa_checkbox);
-            checkBox.setText(tarefa.getDescricao());
-            checkBox.setChecked(tarefa.isRealizado());
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                tarefa.setRealizado(isChecked);
-                AppDatabase.getInstance(MainActivity.this).tarefaDAO().alterar(tarefa);
-            });
-            container.addView(view);
-        }
+
         listarTarefas.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             final Tarefa tarefaSelecionada = (Tarefa) listarTarefas.getAdapter().getItem(info.position);
-            MenuItem compartilhar = menu.add("Compartilhar");
             MenuItem deletar = menu.add("Deletar");
             deletar.setOnMenuItemClickListener(item -> {
                 AlertDialog a = new AlertDialog.Builder(MainActivity.this)
@@ -97,12 +79,10 @@ public class MainActivity extends AppCompatActivity {
                         .show();
                 return true;
             });
-
-
         });
 
         spinner_idiomas = findViewById(R.id.spinner_linguagens);
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this,R.array.listar_idiomas, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.listar_idiomas, android.R.layout.simple_spinner_dropdown_item);
         spinner_idiomas.setAdapter(arrayAdapter);
         spinner_idiomas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -117,10 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
 
@@ -141,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == 1) {
             Snackbar.make(findViewById(R.id.listar_tarefas), "Tarefa cadastrada com sucesso!", Snackbar.LENGTH_LONG).show();
         } else if (resultCode == RESULT_OK && requestCode == 2){
-        Snackbar.make(findViewById(R.id.listar_tarefas), "Tarefa alterada com sucesso!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.listar_tarefas), "Tarefa alterada com sucesso!", Snackbar.LENGTH_LONG).show();
+        }
     }
-    }
+
     public void SelecionarIdioma(String linguagem){
         Locale localidade = new Locale(linguagem);
         Locale.setDefault(localidade);

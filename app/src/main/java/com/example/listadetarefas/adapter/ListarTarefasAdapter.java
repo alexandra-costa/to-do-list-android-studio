@@ -1,6 +1,5 @@
+
 package com.example.listadetarefas.adapter;
-
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,8 +13,6 @@ import com.example.listadetarefas.R;
 import com.example.listadetarefas.model.Tarefa;
 
 import java.util.List;
-
-
 
 public class ListarTarefasAdapter extends BaseAdapter {
 
@@ -44,23 +41,45 @@ public class ListarTarefasAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
 
-        View view = activity.getLayoutInflater().inflate(R.layout.adapter_listar_tarefas, parent, false);
+        if (convertView == null) {
+            convertView = activity.getLayoutInflater().inflate(R.layout.adapter_listar_tarefas, parent, false);
+
+            holder = new ViewHolder();
+            holder.txtItemDescricao = convertView.findViewById(R.id.txt_item_descricao);
+            holder.tarefaCheckbox = convertView.findViewById(R.id.tarefa_checkbox);
+
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         Tarefa tarefa = tarefas.get(position);
-        TextView txtItemDescricao = (TextView) view.findViewById(R.id.txt_item_descricao);
-        txtItemDescricao.setText(tarefa.getDescricao());
+        holder.txtItemDescricao.setText(tarefa.getDescricao());
 
-        CheckBox tarefaCheckbox = view.findViewById(R.id.tarefa_checkbox);
-        tarefaCheckbox.setChecked(tarefa.isRealizado());
-        tarefaCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        holder.tarefaCheckbox.setOnCheckedChangeListener(null); // Remova o listener atual
+
+        holder.tarefaCheckbox.setChecked(tarefa.isRealizado());
+
+        holder.tarefaCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             tarefa.setRealizado(isChecked);
-            if (tarefa.isRealizado()){
-                txtItemDescricao.setTextColor(Color.RED);
-                txtItemDescricao.setPaintFlags(txtItemDescricao.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+            if (tarefa.isRealizado()) {
+                holder.txtItemDescricao.setTextColor(Color.RED);
+                holder.txtItemDescricao.setPaintFlags(holder.txtItemDescricao.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                holder.txtItemDescricao.setTextColor(Color.BLACK);
+                holder.txtItemDescricao.setPaintFlags(holder.txtItemDescricao.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
             }
         });
 
+        return convertView;
+    }
 
-        return view;
+
+
+    private static class ViewHolder {
+        TextView txtItemDescricao;
+        CheckBox tarefaCheckbox;
     }
 }

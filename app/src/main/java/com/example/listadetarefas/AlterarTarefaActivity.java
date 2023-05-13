@@ -2,7 +2,6 @@ package com.example.listadetarefas;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.listadetarefas.DAO.AppDatabase;
 import com.example.listadetarefas.model.Tarefa;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Objects;
 
 public class AlterarTarefaActivity extends AppCompatActivity {
 
@@ -31,23 +32,20 @@ public class AlterarTarefaActivity extends AppCompatActivity {
         tarefa = AppDatabase.getInstance(this).tarefaDAO().listarUm(id);
 
         alterarDescricao.setText(tarefa.getDescricao());
-        btnAlterar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String descricao = alterarDescricao.getText().toString();
+        btnAlterar.setOnClickListener(v -> {
+            String descricao = Objects.requireNonNull(alterarDescricao.getText()).toString();
 
-                if (descricao.isEmpty()) {
-                    alterarDescricao.setError("Descrição não pode ser vazia");
-                    return;
-                }
-
-                tarefa.setDescricao(descricao);
-                AppDatabase.getInstance(AlterarTarefaActivity.this).tarefaDAO().alterar(tarefa);
-
-                Intent intent = new Intent(AlterarTarefaActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+            if (descricao.isEmpty()) {
+                alterarDescricao.setError("Descrição não pode ser vazia");
+                return;
             }
+
+            tarefa.setDescricao(descricao);
+            AppDatabase.getInstance(AlterarTarefaActivity.this).tarefaDAO().alterar(tarefa);
+
+            Intent intent1 = new Intent(AlterarTarefaActivity.this, MainActivity.class);
+            startActivity(intent1);
+            finish();
         });
     }
 }
